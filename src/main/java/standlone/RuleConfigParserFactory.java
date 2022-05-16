@@ -1,5 +1,6 @@
 package standlone;
 
+import standlone.abstracts.IRuleConfigParser;
 import standlone.abstracts.RuleConfigParser;
 import standlone.entity.JsonRuleConfigParser;
 import standlone.entity.PropertiesRuleConfigParser;
@@ -16,5 +17,12 @@ public class RuleConfigParserFactory {
         cachedParsers.put("xml", new XmlRuleConfigParser());
         cachedParsers.put("yaml", new YamlRuleConfigParser());
         cachedParsers.put("properties", new PropertiesRuleConfigParser());
+    }
+    public static IRuleConfigParser createParser(String configFormat) {
+        if (configFormat == null || configFormat.isEmpty()) {
+            return null;//返回null还是IllegalArgumentException全凭你⾃⼰说了算
+        }
+        IRuleConfigParser parser = (IRuleConfigParser) cachedParsers.get(configFormat.toLowerCase());
+        return parser;
     }
 }
